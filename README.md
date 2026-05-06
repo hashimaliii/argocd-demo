@@ -243,6 +243,82 @@ kubectl get pods -n default -w
 
 ---
 
+## 🔄 After Every PC Restart
+
+When you restart your PC, Docker and Minikube stop. You do **NOT** need to reinstall anything. Just run these commands:
+
+**1. Open Docker Desktop** from Start menu and wait until it shows "Engine running" ✅
+
+**2. Open PowerShell as Administrator:**
+
+```powershell
+# Start Minikube
+minikube start --driver=docker
+
+# Start ArgoCD UI access (keep this window open)
+kubectl port-forward svc/argocd-server -n argocd 9090:443
+
+# Get your app URL
+minikube service argocd-demo-svc --url
+```
+
+### What you do NOT need to redo
+
+- ✅ ArgoCD installation (already in cluster)
+- ✅ Creating the app in ArgoCD UI (already saved)
+- ✅ GitHub repo setup (stays as is)
+- ✅ Admin password (same: `AsGYbXVWI7wcIDLb`)
+
+---
+
+## 🖥️ Understanding the ArgoCD UI
+
+When you open `https://localhost:9090`, you will see the **Application Details** view showing a visual tree of your deployment:
+
+### Top Status Bar
+
+| Element | What It Shows |
+|---|---|
+| **APP HEALTH** | ✅ **Healthy** — all resources running correctly |
+| **SYNC STATUS** | ✅ **Synced to HEAD** — cluster matches latest Git commit |
+| **LAST SYNC** | ✅ **Sync OK** — timestamp and commit message of last successful sync |
+
+### Visual Tree Explanation
+
+The UI shows your Kubernetes resources as a tree diagram:
+
+```
+argocd-demo (root app)
+    ├── argocd-demo-svc (Service)
+    │   └── NodePort exposes the app externally
+    │
+    └── argocd-demo (Deployment)
+        ├── argocd-demo-99bc85d55 (ReplicaSet - current version)
+        │   └── argocd-demo-99bc85d55-7gdrj (Pod - running/1/1)
+        │
+        └── argocd-demo-b975f59b5 (ReplicaSet - old version, rev.1)
+```
+
+**What each icon means:**
+
+| Icon | Resource Type | What It Does |
+|---|---|---|
+| 📦 Stack (argocd-demo) | Application | The root ArgoCD application tracking your GitHub repo |
+| 🌐 Mesh (svc) | Service | Exposes your app via NodePort on port 30080 |
+| 🔄 Circles (deploy) | Deployment | Manages your pods and rolling updates |
+| 📋 Document (rs) | ReplicaSet | Maintains the desired number of pod replicas |
+| 📦 Box (pod) | Pod | The actual running container (nginx + your HTML) |
+
+**Green checkmarks** mean healthy and running. **"3 hours"** shows how long since the resource was created. **"rev:2"** means this is the 2nd revision (after your update).
+
+When you push a change to GitHub and ArgoCD syncs, you'll see:
+1. A new ReplicaSet appears (e.g., `rev:3`)
+2. A new Pod spins up under it
+3. The old ReplicaSet scales down to 0
+4. Sync Status updates to show your new commit message
+
+---
+
 ## ❌ Troubleshooting
 
 | Problem | Cause | Fix |
