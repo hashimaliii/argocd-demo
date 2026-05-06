@@ -1,10 +1,10 @@
-# 🚀 ArgoCD Demo — GitOps Continuous Delivery on Minikube
+#  ArgoCD Demo — GitOps Continuous Delivery on Minikube
 
 This project demonstrates **GitOps-based continuous delivery** using ArgoCD on a local Kubernetes cluster (Minikube). When you push a change to this GitHub repo, ArgoCD automatically detects and deploys it to your cluster.
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```
 argocd-demo/
@@ -16,7 +16,7 @@ argocd-demo/
 
 ---
 
-## 🛠️ Prerequisites
+##  Prerequisites
 
 Make sure the following are installed on your machine before starting:
 
@@ -27,7 +27,7 @@ Make sure the following are installed on your machine before starting:
 
 ---
 
-## 📋 Step-by-Step Setup
+##  Step-by-Step Setup
 
 ### Step 1 — Start Minikube
 
@@ -163,7 +163,7 @@ Open the printed URL in your browser. You will see your `index.html` live! 🎉
 
 ---
 
-## 🎯 How the Demo Works
+##  How the Demo Works
 
 ```
 Developer pushes to GitHub
@@ -181,7 +181,7 @@ The deployment uses an **initContainer** that clones the GitHub repo on pod star
 
 ---
 
-## 🔄 Triggering a New Deployment (The "Wow" Moment)
+##  Triggering a New Deployment (The "Wow" Moment)
 
 ### Option A — Edit directly on GitHub (easiest for demo)
 
@@ -202,7 +202,7 @@ git push
 
 ---
 
-## ♻️ Restarting the Pod After a Sync
+##  Restarting the Pod After a Sync
 
 Because the app uses `initContainer git clone`, the HTML is only pulled **once at pod startup**. After ArgoCD syncs a new commit, restart the pod to pull the latest content:
 
@@ -216,7 +216,7 @@ Then refresh your browser to see the updated page.
 
 ---
 
-## 🔍 Useful Commands
+##  Useful Commands
 
 ```powershell
 # Check all pods in default namespace
@@ -243,7 +243,7 @@ kubectl get pods -n default -w
 
 ---
 
-## 🔄 After Every PC Restart
+##  After Every PC Restart
 
 When you restart your PC, Docker and Minikube stop. You do **NOT** need to reinstall anything. Just run these commands:
 
@@ -319,7 +319,7 @@ When you push a change to GitHub and ArgoCD syncs, you'll see:
 
 ---
 
-## ❌ Troubleshooting
+##  Troubleshooting
 
 | Problem | Cause | Fix |
 |---|---|---|
@@ -332,7 +332,7 @@ When you push a change to GitHub and ArgoCD syncs, you'll see:
 
 ---
 
-## 🧠 Key Concepts
+##  Key Concepts
 
 | Term | Meaning |
 |---|---|
@@ -346,7 +346,7 @@ When you push a change to GitHub and ArgoCD syncs, you'll see:
 
 ---
 
-## 📌 Notes
+##  Notes
 
 - ArgoCD polls GitHub every **3 minutes** by default. This is normal — for instant sync, webhooks can be configured.
 - The `applicationsets.argoproj.io` CRD warning during install is **harmless**.
